@@ -178,7 +178,7 @@ int min_index(vector<int> cost)
     }
     return index;
 }
-void msa(set<int> V, set<pair<int, int>> E, int r, map<pair<int, int>, int> w, set<pair<int, int>> &answer)
+void msa(set<int> V, set<pair<int, int>> E, int r, map<pair<int, int>, int> w, set<pair<int, int>> &answer, int n, int times)
 {
     //Step 1 : Removing all edges that lead back to the root
     set<pair<int, int>> edges_copy;
@@ -238,7 +238,7 @@ void msa(set<int> V, set<pair<int, int>> E, int r, map<pair<int, int>, int> w, s
         {
             break;
         }
-        unordered_set<int> visited;
+        set<int> visited;
         next_v = get(pi, v);
 
         while (next_v != inf && next_v != 0)
@@ -299,7 +299,7 @@ void msa(set<int> V, set<pair<int, int>> E, int r, map<pair<int, int>, int> w, s
     {
         int u = i->first;
         int v = i->second;
-        int wt=w[{u,v}];
+        int wt = w[{u, v}];
         if (present(C, u) == 0 && present(C, v) == 1)
         {
             e = {u, v_c};
@@ -341,7 +341,7 @@ void msa(set<int> V, set<pair<int, int>> E, int r, map<pair<int, int>, int> w, s
         }
     }
     // print(V_prime);
-    msa(V_prime, E_prime, r, w_prime, answer);
+    msa(V_prime, E_prime, r, w_prime, answer, n, times);
     pair<int, int> cycle_edge = {inf, inf};
     for (auto i = answer.begin(); i != answer.end(); i++)
     {
@@ -408,9 +408,25 @@ void print_parent(vector<set<pair<int, int>>> directparent, int n, int s)
         }
         else
         {
-            ps(0);
+            if (i == s)
+            {
+                ps(0);
+            }
+            else
+            {
+                ps(-1);
+            }
         }
     }
+}
+int get(map<pair<int, int>, int> weight, pair<int, int> e)
+{
+    auto finder = weight.find(e);
+    if (finder == weight.end())
+    {
+        return inf;
+    }
+    return weight[e];
 }
 void arborescence()
 {
@@ -420,20 +436,34 @@ void arborescence()
     set<int> vertex;
     set<pair<int, int>> edges;
     map<pair<int, int>, int> wt;
+    bool negative_edge_found = 0;
     for (int i = 0; i < m; i++)
     {
-        cin >> u >> v >> w;
-        vertex.insert(v);
-        edges.insert({u, v});
-        wt[{u, v}] = w;
-    }
 
+        cin >> u >> v >> w;
+        if (w < get(wt, {u, v}))
+        {
+            vertex.insert(v);
+            edges.insert({u, v});
+            wt[{u, v}] = w;
+            if (w < 0)
+            {
+                negative_edge_found = 1;
+            }
+        }
+    }
+    if (negative_edge_found == 1)
+    {
+        p(-1);
+        return;
+    }
     set<pair<int, int>> answer;
     vector<set<pair<int, int>>> child(n + 1);
     vector<set<pair<int, int>>> directparent(n + 1);
-    msa(vertex, edges, s, wt, answer);
+    int times = 0;
+    msa(vertex, edges, s, wt, answer, n, times);
     transfer_set_to_vector(answer, child, directparent, wt);
-    vector<int> distance(n + 1);
+    vector<int> distance(n + 1, -1);
 
     distance[s] = 0;
     int sum = sum_finder(child, s, distance);
