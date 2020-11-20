@@ -160,7 +160,24 @@ void print(pair<int, int> tuple)
 {
     p2(tuple.first, tuple.second);
 }
-
+int min_index(vector<int> cost)
+{
+    int index = 0;
+    int min_cost = 0;
+    if (cost.size())
+    {
+        min_cost = cost[0];
+    }
+    for (int i = 0; i < cost.size(); i++)
+    {
+        if (min_cost > cost[i])
+        {
+            min_cost = cost[i];
+            index = i;
+        }
+    }
+    return index;
+}
 void msa(set<int> V, set<pair<int, int>> E, int r, map<pair<int, int>, int> w, set<pair<int, int>> &answer)
 {
     //Step 1 : Removing all edges that lead back to the root
@@ -207,12 +224,8 @@ void msa(set<int> V, set<pair<int, int>> E, int r, map<pair<int, int>, int> w, s
             int costa = w[{u, v}];
             cost.pb(costa);
         }
-        int min_costa = min(cost);
-
-        int indexa = index(cost, min_costa);
-
+        int indexa = min_index(cost);
         pi[v] = edgesa[indexa];
-        // p(pi[v]);
     }
 
     // // //Step 3 : Finding cycles in the graph
@@ -286,17 +299,18 @@ void msa(set<int> V, set<pair<int, int>> E, int r, map<pair<int, int>, int> w, s
     {
         int u = i->first;
         int v = i->second;
+        int wt=w[{u,v}];
         if (present(C, u) == 0 && present(C, v) == 1)
         {
             e = {u, v_c};
             if (present(E_prime, e) == 1)
             {
-                if (w_prime[e] < w[{u, v}] - w[{pi[v], v}])
+                if (w_prime[e] < wt - w[{pi[v], v}])
                 {
                     continue;
                 }
             }
-            w_prime[e] = w[{u, v}] - w[{pi[v], v}];
+            w_prime[e] = wt - w[{pi[v], v}];
             correspondance[e] = {u, v};
             E_prime.insert(e);
         }
@@ -308,21 +322,21 @@ void msa(set<int> V, set<pair<int, int>> E, int r, map<pair<int, int>, int> w, s
             {
                 auto elementa = correspondance[e];
                 int old_u = elementa.first;
-                if (w[{old_u, v}] < w[{u, v}])
+                if (w[{old_u, v}] < wt)
                 {
 
                     continue;
                 }
             }
             E_prime.insert(e);
-            w_prime[e] = w[{u, v}];
+            w_prime[e] = wt;
             correspondance[e] = {u, v};
         }
         else if (present(C, u) == 0 && present(C, v) == 0)
         {
             e = {u, v};
             E_prime.insert(e);
-            w_prime[e] = w[{u, v}];
+            w_prime[e] = wt;
             correspondance[e] = {u, v};
         }
     }
@@ -398,7 +412,7 @@ void print_parent(vector<set<pair<int, int>>> directparent, int n, int s)
         }
     }
 }
-void arborescense()
+void arborescence()
 {
     int n, m, s;
     int u, v, w;
@@ -433,11 +447,18 @@ void arborescense()
 signed main()
 {
     fastio;
+    clock_t start, end;
+    start = clock();
     int t;
     cin >> t;
 
     while (t--)
     {
-        arborescense();
+        arborescence();
     }
+    end = clock();
+    double time_taken = double(end - start) / double(CLOCKS_PER_SEC);
+    cout << "Time taken by program is : " << fixed
+         << time_taken << setprecision(5);
+    cout << " sec " << endl;
 }
