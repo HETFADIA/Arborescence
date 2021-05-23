@@ -29,7 +29,7 @@ using namespace std;
 #define pf(x) push_front(x);
 #define mkp(x, y) make_pair(x, y)
 #define inf 1e14
-void copy(set<pair<int, int>> real, set<pair<int, int>> &virtuala)
+void copy(set<pair<int, int>> &real, set<pair<int, int>> &virtuala)
 {
     for (auto i = real.begin(); i != real.end(); i++)
     {
@@ -38,7 +38,7 @@ void copy(set<pair<int, int>> real, set<pair<int, int>> &virtuala)
         virtuala.insert({fi, se});
     }
 }
-int min(vector<int> v)
+int min(vector<int> &v)
 {
     int res = 0;
     if (v.size())
@@ -54,7 +54,7 @@ int min(vector<int> v)
     }
     return res;
 }
-int index(vector<int> v, int val)
+int index(vector<int> &v, int val)
 {
     for (int i = 0; i < v.size(); i++)
     {
@@ -65,7 +65,7 @@ int index(vector<int> v, int val)
     }
     return 0;
 }
-int get(map<int, int> pi, int val)
+int get(map<int, int> &pi, int val)
 {
     auto finder = pi.find(val);
     if (finder == pi.end())
@@ -74,7 +74,7 @@ int get(map<int, int> pi, int val)
     }
     return pi[val];
 }
-int present(set<int> seta, int val)
+int present(set<int> &seta, int val)
 {
     auto finder = seta.find(val);
     if (finder == seta.end())
@@ -83,7 +83,7 @@ int present(set<int> seta, int val)
     }
     return 1;
 }
-int present(set<pair<int, int>> seta, pair<int, int> tuple)
+int present(set<pair<int, int>> &seta, pair<int, int> tuple)
 {
     auto finder = seta.find(tuple);
     if (finder == seta.end())
@@ -93,7 +93,7 @@ int present(set<pair<int, int>> seta, pair<int, int> tuple)
 
     return 1;
 }
-int present(map<int, int> mapa, int val)
+int present(map<int, int> &mapa, int val)
 {
     auto finder = mapa.find(val);
     if (finder == mapa.end())
@@ -102,7 +102,7 @@ int present(map<int, int> mapa, int val)
     }
     return 1;
 }
-void print(vector<int> v)
+void print(vector<int> &v)
 {
     for (int i = 0; i != v.size(); i++)
     {
@@ -110,14 +110,14 @@ void print(vector<int> v)
     }
     p("");
 }
-void prints(vector<int> v)
+void prints(vector<int> &v)
 {
     for (int i = 1; i != v.size(); i++)
     {
         ps(v[i]);
     }
 }
-void print(set<pair<int, int>> seta)
+void print(set<pair<int, int>> &seta)
 {
     for (auto i = seta.begin(); i != seta.end(); i++)
     {
@@ -125,7 +125,7 @@ void print(set<pair<int, int>> seta)
     }
     p("");
 }
-void print(map<int, int> mapa)
+void print(map<int, int> &mapa)
 {
     for (auto i = mapa.begin(); i != mapa.end(); i++)
     {
@@ -133,7 +133,7 @@ void print(map<int, int> mapa)
     }
     p("");
 }
-void print(set<int> seta)
+void print(set<int> &seta)
 {
     for (auto i = seta.begin(); i != seta.end(); i++)
     {
@@ -141,14 +141,14 @@ void print(set<int> seta)
     }
     p("");
 }
-void print(map<pair<int, int>, pair<int, int>> mapa)
+void print(map<pair<int, int>, pair<int, int>> &mapa)
 {
     for (auto i = mapa.begin(); i != mapa.end(); i++)
     {
         ps4(i->first.first, i->first.second, i->second.first, i->second.second);
     }
 }
-void print(map<pair<int, int>, int> mapa)
+void print(map<pair<int, int>, int> &mapa)
 {
     for (auto i = mapa.begin(); i != mapa.end(); i++)
     {
@@ -156,11 +156,11 @@ void print(map<pair<int, int>, int> mapa)
     }
     p("");
 }
-void print(pair<int, int> tuple)
+void print(pair<int, int> &tuple)
 {
     p2(tuple.first, tuple.second);
 }
-int min_index(vector<int> cost)
+int min_index(vector<int> &cost)
 {
     int index = 0;
     int min_cost = 0;
